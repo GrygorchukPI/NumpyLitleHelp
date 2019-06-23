@@ -1,0 +1,310 @@
+# Method 2
+np.random.seed(100)
+np.random.randint(10, size=(5,5))
+
+
+
+
+
+
+
+
+
+26. How to extract a particular column from 2D array?
+
+import numpy as np
+
+# Input:
+arr = np.array([[1,2,3,4,5],
+                [1,2,3,4,5],
+                [1,2,3,4,5],
+                [1,2,3,4,5]])
+species_column_idx = 4
+
+# Solution:
+species = arr[:, species_column_idx]
+species
+
+###################################################################################################
+
+26.5. How to extract a particular column from 1D array of tuples?
+
+import numpy as np
+
+# Input:
+arr = np.array([(1,2,3,4,5),
+                (1,2,3,4,5),
+                (1,2,3,4,5),
+                (1,2,3,4,5)])
+species_column_idx = 4
+
+# Solution:
+species = np.array([row[species_column_idx] for row in arr])
+species
+
+###################################################################################################
+
+27. How to convert a 1d array of tuples to a 2d numpy array?
+
+import numpy as np
+
+# Input:
+arr = np.array([(1,2,3,4),(5,6,7,8),(9,10,11,12),(13,14,15,16)])
+
+# Solution:
+matr = np.array([row.tolist()[:4] for row in arr])
+matr[:4]
+
+###################################################################################################
+
+28. How to compute the mean, median, standard deviation of a numpy array?
+
+import numpy as np
+
+# Input
+
+arr = np.array([1,2,3,4,5,6,7,8,9,10])
+
+# Solution
+mu, med, sd = np.mean(arr), np.median(arr), np.std(arr)
+
+# Output
+print("mean = ", mu, "; median = ", med, "; deviation = ", sd)
+
+###################################################################################################
+
+29. How to normalize an array so the values range exactly between 0 and 1?
+
+import numpy as np
+
+# Input
+arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+# Solution
+arr_max, arr_min = arr.max(), arr.min()
+Arr = (arr - arr_min)/(arr_max - arr_min)
+print(Arr)
+
+###################################################################################################
+
+30. How to compute the softmax score?
+
+import numpy as np
+
+# Input
+
+arr = np.array([1,2,3,4,5,6,7,8,9,10])
+
+# Solution
+def softmax(x):
+  #    """Compute softmax values for each sets of scores in x.
+  #       https://stackoverflow.com/questions/34968722/how-to-implement-the-softmax-function-in-python"""
+  e_x = np.exp(x - np.max(x))
+  return e_x / e_x.sum(axis=0)
+print(softmax(arr))
+
+###################################################################################################
+
+31. How to find the percentile scores of a numpy array?
+
+import numpy as np
+
+# Input
+
+arr = np.array([1,2,3,4,5,6,7,8,9,10])
+
+# Solution
+np.percentile(arr, q=[5, 95])
+
+###################################################################################################
+
+32. How to insert values at random positions in an array?
+
+import numpy as np
+
+# Input
+matr = np.array([[1.,2.,3.,4.,5.],
+                 [1.,2.,3.,4.,5.],
+                 [1.,2.,3.,4.,5.],
+                 [1.,2.,3.,4.,5.],
+                 [1.,2.,3.,4.,5.]])
+
+# Method 1
+i, j = np.where(matr)
+# i, j contain the row numbers and column numbers of 25 elements of matr
+np.random.seed(100)
+matr[np.random.choice((i), 5), np.random.choice((j), 5)] = np.nan
+
+print(matr)
+
+# Method 2
+np.random.seed(100)
+matr[np.random.randint(5, size=5), np.random.randint(5, size=5)] = np.nan
+
+print(matr)
+
+###################################################################################################
+
+33. How to find the position of missing values in numpy array?
+
+import numpy as np
+
+matr = np.array([[1.,    2., 3.,    4., 5.],
+                 [1.,    2., 3.,    4., 5.],
+                 [1.,    2., np.nan,4., 5.],
+                 [np.nan,2., 3.,    4., 5.],
+                 [1.,    2., 3.,    4., 5.]])
+
+# Solution
+
+print("Number of missing values: \n", np.isnan(matr[:, :]).sum())
+print("Position of missing values: \n", np.where(np.isnan(matr[:, :])))
+
+
+###################################################################################################
+
+34. How to filter a numpy array based on two or more conditions?
+
+import numpy as np
+
+# Input
+
+matr = np.array([[8, 8, 3, 7, 7],
+                 [0, 4, 2, 5, 2],
+                 [2, 2, 1, 0, 8],
+                 [4, 0, 9, 6, 2],
+                 [4, 1, 5, 3, 4]])
+
+# Solution
+
+condition = (matr[:, 2] > 1) & (matr[:, 0] < 5)
+matr[condition]
+
+###################################################################################################
+
+35. How to drop rows that contain a missing value from a numpy array?
+
+import numpy as np
+
+# Input
+matr = np.array([[1.,    2., 3.,    4., 5.],
+                 [1.,    2., 3.,    4., 5.],
+                 [1.,    2., np.nan,4., 5.],
+                 [np.nan,2., 3.,    4., 5.],
+                 [1.,    2., 3.,    4., 5.]])
+
+# Solution
+# No direct numpy function for this.
+
+# Method 1:
+any_nan_in_row = np.array([~np.any(np.isnan(row)) for row in matr])
+matr[any_nan_in_row][:5]
+
+# Method 2: (By Rong)
+matr[np.sum(np.isnan(matr), axis = 1) == 0][:5]
+
+###################################################################################################
+
+36. How to find the correlation between two columns of a numpy array?
+
+import numpy as np
+
+# Input
+
+matr = np.array([[0, 0, 0, 2, 2],
+                 [0, 2, 1, 2, 2],
+                 [2, 2, 1, 0, 0],
+                 [0, 0, 2, 0, 1],
+                 [1, 2, 2, 0, 0]])
+
+# Solution 1
+np.corrcoef(matr[:, 0], matr[:, 2])[0, 1]
+
+# Solution 2
+from scipy.stats.stats import pearsonr 
+corr, p_value = pearsonr(matr[:, 0], matr[:, 2])
+print(corr)
+
+# Correlation coef indicates the degree of linear relationship between two numeric variables.
+# It can range between -1 to +1.
+
+# The p-value roughly indicates the probability of an uncorrelated system producing 
+# datasets that have a correlation at least as extreme as the one computed.
+
+# The lower the p-value (<0.01), stronger is the significance of the relationship.
+# It is not an indicator of the strength.
+
+###################################################################################################
+
+37. How to find if a given array has any null values?
+
+import numpy as np
+
+# Input
+matr = np.array([[1.,    2., 3.,    4., 5.],
+                 [1.,    2., 3.,    4., 5.],
+                 [1.,    2., np.nan,4., 5.],
+                 [np.nan,2., 3.,    4., 5.],
+                 [1.,    2., 3.,    4., 5.]])
+
+
+
+np.isnan(matr).any()
+
+###################################################################################################
+
+38. How to replace all missing values with 0 in a numpy array?
+
+import numpy as np
+
+# Input
+matr = np.array([[1.,    2., 3.,    4., 5.],
+                 [1.,    2., 3.,    4., 5.],
+                 [1.,    2., np.nan,4., 5.],
+                 [np.nan,2., 3.,    4., 5.],
+                 [1.,    2., 3.,    4., 5.]])
+
+# Solution
+matr[np.isnan(matr)] = 0
+matr[:,:]
+
+###################################################################################################
+
+39. How to find the count of unique values in a numpy array?
+
+import numpy as np
+
+# Import 
+
+arr = np.array([1,2,3,1,2,4])
+
+# Solution
+
+# Get the unique values and the counts
+np.unique(arr, return_counts=True)
+
+###################################################################################################
+
+40. How to convert a numeric to a categorical (text) array?
+
+import numpy as np
+
+# Input
+
+heightArr = np.array([1.80, 2.10, 1.90, 1.60, 1.70, 1.65, 1.75])
+
+# Bin petallength 
+height_bin = np.digitize(heightArr, [0.0, 1.7, 1.85, 2.0])
+
+# Map it to respective category
+label_map = {1: 'small', 2: 'medium', 3: 'large', 4: 'alien'}
+height_cat = [label_map[x] for x in petal_length_bin]
+
+# View
+height_cat
+
+###################################################################################################
+
+41. How to create a new column from existing columns of a numpy array?
+
+
